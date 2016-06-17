@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>IronStone.Web.BasicBundles</id>
+    <version>1.0</version>
+    <title>BasicBundles</title>
+    <authors>Jens Theisen</authors>
+    <owners>Jens Theisen</owners>
+    <projectUrl>https://github.com/jtheisen/basic-bundles</projectUrl>
+    <!--<iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>-->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Lightweight, pragmatic bundling.</summary>
+    <description>A lightweight bundling framework without minification and no dependencies.</description>
+    <copyright>Copyright 2016</copyright>
+    <tags>ironstone basicbundles basic-bundles bundling bundle</tags>
+  </metadata>
+</package>

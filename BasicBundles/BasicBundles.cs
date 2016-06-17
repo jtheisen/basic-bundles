@@ -745,7 +745,14 @@ namespace IronStone.Web.BasicBundles
 
         static Stack<SettingsSet> settingsStack = new Stack<SettingsSet>();
 
-        internal static SettingsSet Settings { get { return settingsStack.Peek(); } }
+        internal static SettingsSet Settings { get {
+
+                if (settingsStack.Count == 0)
+                    throw new InvalidOperationException("Basic Bundles have not been initialized. Call Configuration.Install first.");
+
+                return settingsStack.Peek();
+            }
+        }
 
         static ResourceFlavor GetStandardFlavorFromRenderMode(RenderMode mode)
         {

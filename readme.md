@@ -4,6 +4,8 @@ BasicBundles - the lightweight, pragmatic bundler
 This is another ASP.NET bundling framework and it can serve as a
 replacement for `Cassette` or the one in `Microsoft.Optimization`.
 
+Appveyor build status: ![Build status](https://ci.appveyor.com/api/projects/status/s2xe2fsebnmlxqgf?svg=true)
+
 ## Usage
 
 You define a number of files and bundles in some static class that is

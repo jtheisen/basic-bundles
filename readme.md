@@ -16,7 +16,7 @@ defines a jQuery resource. In a view that needs it, you can then
 require that resource by adding
 
     @{
-        BasicBundlesConfiguration.JQuery.Require();
+        BundleConfig.JQuery.Require();
     }
 
 In your layout file `_Layout.cshtml` you will let `BasicBundles`
@@ -27,6 +27,9 @@ then emit markup for all required resources by putting in
 and
 
     @Html.Raw(WebResources.RenderScripts())
+
+Please see the including samples for further details until I have
+a proper getting started guide.
 
 ## Rationale
 
@@ -80,7 +83,7 @@ was a scripting language.
 BasicBundles lets you define all resources and bundles in C# and then
 use those definitions in views in a type-safe manner.
 
-### - It's serving bundled and bundled together
+### - It's serving bundled and unbundled simultaneously
 
 BasicBundles have no `web.config` app settings to make them run
 in developer or release mode. It's easy to implement a choice between

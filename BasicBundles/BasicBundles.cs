@@ -214,12 +214,12 @@ namespace IronStone.Web.BasicBundles
     {
         /// <summary>
         /// Requires this requirable. All resources this requirable represents will
-        /// have their tags emited on a call to <see cref="Consumption.WebResources.RenderScripts" />
-        /// or <see cref="Consumption.WebResources.RenderStylesheets"/>.
+        /// have their tags emited on a call to <see cref="WebResources.RenderScripts" />
+        /// or <see cref="WebResources.RenderStylesheets"/>.
         /// </summary>
         public void Require()
         {
-            Consumption.WebResources.Require(this);
+            WebResources.Require(this);
         }
 
         internal abstract IEnumerable<Requestable> GetRequestables();
@@ -904,8 +904,6 @@ namespace IronStone.Web.BasicBundles
         public static Repository Repository { get { return Settings.RepositoryHolder.Value; } }
     }
 
-    namespace Consumption
-    {
         class Tracker
         {
             public Tracker()
@@ -1001,60 +999,57 @@ namespace IronStone.Web.BasicBundles
             List<Requestable> requestables = new List<Requestable>();
         }
 
-        /// <summary>
-        /// Provides all methods needed in views to require resources and render tags.
-        /// </summary>
-        public static class WebResources
+    /// <summary>
+    /// Provides all methods needed in layouts and master pages to render tags.
+    /// </summary>
+    public static class WebResources
+    {
+        internal static void Require(Requirable requirable)
         {
-            internal static void Require(Requirable requirable)
+            GetTracker().Require(requirable);
+        }
+
+        private static String Render(ResourceType type)
+        {
+            return GetTracker().Render(type);
+        }
+
+        /// <summary>
+        /// Renders the style tags.
+        /// </summary>
+        /// <returns></returns>
+        public static String RenderStylesheets()
+        {
+            return Render(ResourceType.Css);
+        }
+
+        /// <summary>
+        /// Renders the script tags.
+        /// </summary>
+        /// <returns></returns>
+        public static String RenderScripts()
+        {
+            return Render(ResourceType.Js);
+        }
+
+        static Tracker GetTracker()
+        {
+            var store = Configuration.Settings.RequestStore;
+
+            var tracker = store.Get<Tracker>();
+
+            if (null == tracker)
             {
-                GetTracker().Require(requirable);
+                store.Set<Tracker>(tracker = new Tracker());
             }
 
-            private static String Render(ResourceType type)
-            {
-                return GetTracker().Render(type);
-            }
-
-            /// <summary>
-            /// Renders the style tags.
-            /// </summary>
-            /// <returns></returns>
-            public static String RenderStylesheets()
-            {
-                return Render(ResourceType.Css);
-            }
-
-            /// <summary>
-            /// Renders the script tags.
-            /// </summary>
-            /// <returns></returns>
-            public static String RenderScripts()
-            {
-                return Render(ResourceType.Js);
-            }
-
-            static Tracker GetTracker()
-            {
-                var store = Configuration.Settings.RequestStore;
-
-                var tracker = store.Get<Tracker>();
-
-                if (null == tracker)
-                {
-                    store.Set<Tracker>(tracker = new Tracker());
-                }
-
-                return tracker;
-            }
+            return tracker;
         }
     }
 }
 
 namespace IronStone.Web.BasicBundles.Testing
 {
-    using Tracker = IronStone.Web.BasicBundles.Consumption.Tracker;
-
     /// <summary>
     /// Contains unit tests.
     /// </summary>

@@ -6,7 +6,7 @@ replacement for `Cassette` or the one in `Microsoft.Optimization`.
 
 Appveyor build status: ![Build status](https://ci.appveyor.com/api/projects/status/s2xe2fsebnmlxqgf?svg=true)
 
-For a getting started guid, please see the wiki.
+For a getting started guide, please see the wiki.
 
 ## Usage
 

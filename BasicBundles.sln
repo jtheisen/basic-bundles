@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicBundles.UnitTests", "B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicBundles.SampleMvc5", "BasicBundles.SampleMvc5\BasicBundles.SampleMvc5.csproj", "{BEE132D2-4773-4132-B42D-056C044DD963}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicBundles.SampleWebForms4", "BasicBundles.SampleWebForms4\BasicBundles.SampleWebForms4.csproj", "{8DAAC973-F310-4BC0-A1B3-4E244D6C9614}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{BEE132D2-4773-4132-B42D-056C044DD963}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEE132D2-4773-4132-B42D-056C044DD963}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEE132D2-4773-4132-B42D-056C044DD963}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DAAC973-F310-4BC0-A1B3-4E244D6C9614}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DAAC973-F310-4BC0-A1B3-4E244D6C9614}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DAAC973-F310-4BC0-A1B3-4E244D6C9614}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DAAC973-F310-4BC0-A1B3-4E244D6C9614}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

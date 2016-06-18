@@ -6,6 +6,8 @@ replacement for `Cassette` or the one in `Microsoft.Optimization`.
 
 Appveyor build status: ![Build status](https://ci.appveyor.com/api/projects/status/s2xe2fsebnmlxqgf?svg=true)
 
+For a getting started guid, please see the wiki.
+
 ## Usage
 
 You define a number of files and bundles in some static class that is

@@ -3,16 +3,14 @@ param (
     [switch] $updateAppVeyorVersion = $false
 )
 
-$path = "C:\Users\Jens\Dropbox (VisBricks)\Projects\ironstone-basic-bundles\BasicBundles";
-
-$version = [System.IO.File]::ReadAllText("$path\version.txt")
+$version = [System.IO.File]::ReadAllText("version.txt")
 
 $versionUntilDash = $version.Split('-')[0];
 
 if ($includeParticulars) {
     $date = [DateTime]::Now.ToString("yyMMdd-HHmm");
 
-    $ref = $(git -C $path rev-parse --short HEAD)
+    $ref = $(git rev-parse --short HEAD)
 
     $longversion = "${version}-${ref}-$date"
 }

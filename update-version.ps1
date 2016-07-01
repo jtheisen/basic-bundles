@@ -21,7 +21,11 @@ else {
 }
 
 if ($updateAppVeyorVersion) {
-    Update-AppveyorBuild -Version $longversion
+    if (Get-Command "Update-AppveyorBuild" -ErrorAction SilentlyContinue) {
+        Update-AppveyorBuild -Version "$longversion"
+    } else {
+        echo "Could not find 'Update-AppveyorBuild', AppVeyor version not updated."
+    }
 }
 
 foreach ($file in dir -Recurse $path | where { $_.Name -eq "AssemblyInfo.cs" }) {

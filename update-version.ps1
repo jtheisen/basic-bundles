@@ -1,5 +1,6 @@
 param (
-    [switch] $includeParticulars = $false
+    [switch] $includeParticulars = $false,
+    [switch] $updateAppVeyorVersion = $false
 )
 
 $path = "C:\Users\Jens\Dropbox (VisBricks)\Projects\ironstone-basic-bundles\BasicBundles";
@@ -17,6 +18,10 @@ if ($includeParticulars) {
 }
 else {
     $longversion = $version
+}
+
+if ($updateAppVeyorVersion) {
+    Update-AppveyorBuild -Version $longversion
 }
 
 foreach ($file in dir -Recurse $path | where { $_.Name -eq "AssemblyInfo.cs" }) {

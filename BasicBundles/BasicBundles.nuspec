@@ -1,8 +1,8 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <package >
   <metadata>
     <id>IronStone.Web.BasicBundles</id>
-    <version>1.0</version>
+    <version>1.0.0</version>
     <title>BasicBundles</title>
     <authors>Jens Theisen</authors>
     <owners>Jens Theisen</owners>

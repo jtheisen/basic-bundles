@@ -14,7 +14,7 @@ if ($includeParticulars) {
 
     $ref = $(git -C $path rev-parse --short HEAD)
 
-    $longversion = "${version}:${ref}:$date"
+    $longversion = "${version}-${ref}-$date"
 }
 else {
     $longversion = $version
@@ -41,5 +41,3 @@ foreach ($file in dir -Recurse $path | where { $_.Name -like "*.nuspec" }) {
     | foreach { $_ -replace '<version>(.*)</version>', "<version>$version</version>" } `
     | sc -Encoding UTF8 $file.FullName
 }
-
-#dir -Recurse $path | where { $_.Name -eq "AssemblyInfo.cs" }

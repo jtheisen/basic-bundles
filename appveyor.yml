@@ -32,7 +32,7 @@ after_build:
 - ps: nuget pack BasicBundles\BasicBundles.nuspec -version "$env:nugetVersion"
 
 artifacts:
-- path: 'BasicBundles*.nupkg'
+- path: 'BasicBundles\BasicBundles*.nupkg'
   name: nuget-package
 
 #deploy:

@@ -1,7 +1,7 @@
 version: 1.0.3.{build}
 
 environment:
-  packageVersion: 0.0.4
+  packageVersion: 1.0.4
 
 init:
 - ps: $env:buildVersion = "$env:packageVersion.$env:appveyor_build_number"
@@ -32,7 +32,7 @@ after_build:
 - ps: nuget pack BasicBundles\BasicBundles.nuspec -version "$env:nugetVersion"
 
 artifacts:
-- path: 'BasicBundles\BasicBundles*.nupkg'
+- path: '*.nupkg'
   name: nuget-package
 
 #deploy:

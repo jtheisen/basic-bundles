@@ -55,10 +55,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="BeforeBuild">
-    <Exec Command="powershell -File ..\update-version.ps1 -includeParticulars -updateAppVeyorVersion" />
-  </Target>
-  <Target Name="AfterBuild">
-    <Exec Command="powershell -File ..\update-version.ps1" />
-  </Target>
 </Project>

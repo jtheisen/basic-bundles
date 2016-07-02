@@ -29,7 +29,7 @@ build:
   verbosity: minimal
 
 after_build:
-- ps: nuget pack BasicBundles.nuspec -version "$env:nugetVersion"
+- ps: nuget pack BasicBundles\BasicBundles.nuspec -version "$env:nugetVersion"
 
 artifacts:
 - path: 'BasicBundles*.nupkg'

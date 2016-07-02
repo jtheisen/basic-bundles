@@ -1,18 +1,19 @@
-version: 1.0.3.{build}
+#version: 1.0.3.{build}
 
 environment:
-  packageVersion: 1.0.4
+  version: 1.0.4
+  versionSuffix: -prerelease
 
 init:
-- ps: $env:buildVersion = "$env:packageVersion.$env:appveyor_build_number"
-- ps: $env:nugetVersion = "$env:packageVersion-beta-$env:appveyor_build_number"
+- ps: $env:buildVersion = "$env:version.$env:versionSuffix.$env:appveyor_build_number"
+- ps: $env:nugetVersion = "$env:version.$env:versionSuffix"
 - ps: Update-AppveyorBuild -Version $env:buildVersion
 
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
-  assembly_version: '$(buildVersion)'
-  assembly_file_version: '$(buildVersion)'
+  assembly_version: '$(version)'
+  assembly_file_version: '$(version)'
   assembly_informational_version: '$(nugetVersion)'
 
 configuration: Debug

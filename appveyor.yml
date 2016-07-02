@@ -1,6 +1,44 @@
-version: 1.0.2-extra-something-{build}
+version: 1.0.3.{build}
+
+environment:
+  packageVersion: 0.0.4
+
+init:
+- ps: $env:buildVersion = "$env:packageVersion.$env:appveyor_build_number"
+- ps: $env:nugetVersion = "$env:packageVersion-beta-$env:appveyor_build_number"
+- ps: Update-AppveyorBuild -Version $env:buildVersion
+
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '$(buildVersion)'
+  assembly_file_version: '$(buildVersion)'
+  assembly_informational_version: '$(nugetVersion)'
+
+configuration: Debug
+
+nuget:
+  account_feed: true
+  project_feed: true
+  disable_publish_on_pr: true
+
 before_build:
-- cmd: nuget restore
+- nuget restore
+
 build:
-  publish_nuget: true
   verbosity: minimal
+
+after_build:
+- ps: nuget pack BasicBundles.nuspec -version "$env:nugetVersion"
+
+artifacts:
+- path: 'BasicBundles*.nupkg'
+  name: nuget-package
+
+#deploy:
+#- provider: NuGet
+#  api_key:
+#    secure: blahblahblah
+#  artifact: nuget-package
+#  on:
+#    branch: master

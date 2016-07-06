@@ -1,8 +1,6 @@
-#version: 1.0.3.{build}
-
 environment:
   version: 1.0.4
-  versionSuffix: -prerelease
+  versionSuffix:
 
 init:
 - ps: $env:buildVersion = "$env:version$env:versionSuffix.$env:appveyor_build_number"
@@ -30,16 +28,8 @@ build:
   verbosity: minimal
 
 after_build:
-- ps: nuget pack BasicBundles\BasicBundles.nuspec -version "$env:nugetVersion"
+- ps: nuget pack BasicBundles\BasicBundles.csproj -version "$env:nugetVersion"
 
 artifacts:
 - path: '*.nupkg'
   name: nuget-package
-
-#deploy:
-#- provider: NuGet
-#  api_key:
-#    secure: blahblahblah
-#  artifact: nuget-package
-#  on:
-#    branch: master

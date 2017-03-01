@@ -104,3 +104,13 @@ them both.
 In `BasicBundles` you can specify which resource or bundle requires
 what other one as a dependency, and those will be injected also.
   
+### - It can calculate a hash for all required dependencies
+
+Single-page applications still need versioning for external resources.
+As opposed to classical web applications, they don't reload those on
+most requests, as most requests are AJAX requests.
+
+By storing the hash of all required resources on the client and comparing
+it to a new one fetched from the server, the client logic can determine
+whether a new version with changed resources was deployed. In that case,
+it can trigger a page reload (or ask the user to do so).

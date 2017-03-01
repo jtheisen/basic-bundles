@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MyWebForm.Master" AutoEventWireup="true" CodeBehind="MyWebForm.aspx.cs" Inherits="BasicBundles.SampleWebForms4.MyWebForm1" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Default.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="BasicBundles.SampleWebForms4.MyWebForm1" %>
 
 <%@ Import Namespace="BasicBundles.SampleWebForms4" %>
 

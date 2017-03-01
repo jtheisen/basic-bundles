@@ -138,6 +138,11 @@ namespace IronStone.Web.BasicBundles
                     throw new ArgumentException();
             }
         }
+
+        public static Byte[] CombineByteArrays(this IEnumerable<Byte[]> arrays)
+        {
+            return arrays.Aggregate((l, r) => l.Zip(r, (x, y) => (Byte)(x ^ y)).ToArray());
+        }
     }
 
     class ResourceFlavorInfo
@@ -387,7 +392,7 @@ namespace IronStone.Web.BasicBundles
 
                 var hash = contents
                     .Select(r => hashes[r])
-                    .Aggregate((l, r) => l.Zip(r, (x, y) => (Byte)(x ^ y)).ToArray());
+                    .CombineByteArrays();
 
                 bundleContents[bundle] = writer.ToString();
 
@@ -427,10 +432,9 @@ namespace IronStone.Web.BasicBundles
             };
         }
 
-
-        internal String GetHash(Requestable resource)
+        internal Byte[] GetHash(Requestable resource)
         {
-            return Convert.ToBase64String(hashes[resource]);
+            return hashes[resource];
         }
 
         internal Int32 GetIndex(Resource resource)
@@ -904,100 +908,117 @@ namespace IronStone.Web.BasicBundles
         public static Repository Repository { get { return Settings.RepositoryHolder.Value; } }
     }
 
-        class Tracker
+    class Tracker
+    {
+        public Tracker()
         {
-            public Tracker()
-            {
-                this.repository = Configuration.Repository;
-            }
-
-            public void Require(Requirable requirable)
-            {
-                foreach (var requestable in requirable.GetRequestables())
-                {
-                    requestables.Add(requestable);
-                }
-            }
-
-            public String Render(ResourceType type)
-            {
-                var settings = Configuration.Settings;
-
-                var mode = settings.GetMode();
-
-                var flavor = settings.GetFlavor();
-
-                var template = GetTemplateForType(type);
-
-                var selector = GetSelectorFromMode(mode);
-
-                var html = String.Join("\n",
-                    from r in selector(type)
-                    select String.Format(template, GetUrlForWebResource(r, flavor, settings.ToAbsolute))
-                    );
-
-                return html;
-            }
-
-            Func<ResourceType, IEnumerable<Requestable>> GetSelectorFromMode(RenderMode mode)
-            {
-                switch (mode)
-                {
-                    case RenderMode.Individual:
-                        return Expand;
-                    case RenderMode.Bundled:
-                        return Simplify;
-                    default:
-                        throw new ArgumentException();
-                }
-            }
-
-            internal IEnumerable<Requestable> Simplify(ResourceType type)
-            {
-                // We could do more, but we don't have to.
-
-                return requestables
-                    .Where(r => r.Type == type)
-                    .Distinct();
-            }
-
-            internal IEnumerable<Requestable> Expand(ResourceType type)
-            {
-                return GetOrderedResourcesWithDependencies(requestables.Where(r => r.Type == type).ExpandToResources());
-            }
-
-            Resource[] GetOrderedResourcesWithDependencies(IEnumerable<Resource> resources)
-            {
-                var resourcesWithDependencies = resources.GetResourcesWithDependencies()
-                    .OrderBy(r => repository.GetIndex(r))
-                    .ToArray();
-
-                return resourcesWithDependencies;
-            }
-
-            static String GetTemplateForType(ResourceType type)
-            {
-                switch (type)
-                {
-                    case ResourceType.Js:
-                        return "<script src=\"{0}\"></script>";
-                    case ResourceType.Css:
-                        return "<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\">";
-                    default:
-                        throw new ArgumentException();
-                }
-            }
-
-            String GetUrlForWebResource(Requestable requestable, ResourceFlavor flavor, Func<String, String> toAbsolute)
-            {
-
-                return $"{toAbsolute(requestable.GetFlavouredPath(flavor))}?version={repository.GetHash(requestable)}";
-            }
-
-            Repository repository;
-
-            List<Requestable> requestables = new List<Requestable>();
+            this.repository = Configuration.Repository;
         }
+
+        public void Require(Requirable requirable)
+        {
+            foreach (var requestable in requirable.GetRequestables())
+            {
+                requestables.Add(requestable);
+            }
+        }
+
+        public String Render(ResourceType type)
+        {
+            var settings = Configuration.Settings;
+
+            var mode = settings.GetMode();
+
+            var flavor = settings.GetFlavor();
+
+            var template = GetTemplateForType(type);
+
+            var selector = GetSelectorFromMode(mode);
+
+            var html = String.Join("\n",
+                from r in selector(type)
+                select String.Format(template, GetUrlForWebResource(r, flavor, settings.ToAbsolute))
+                );
+
+            return html;
+        }
+
+        public String GetCombinedHash()
+        {
+            var settings = Configuration.Settings;
+
+            var mode = settings.GetMode();
+
+            var selector = GetSelectorFromMode(mode);
+
+            var combinedHash = (
+                from type in Enum.GetValues(typeof(ResourceType)).Cast<ResourceType>()
+                from resource in selector(type)
+                select repository.GetHash(resource)
+                )
+                .CombineByteArrays();
+
+            return Convert.ToBase64String(combinedHash);
+        }
+
+        Func<ResourceType, IEnumerable<Requestable>> GetSelectorFromMode(RenderMode mode)
+        {
+            switch (mode)
+            {
+                case RenderMode.Individual:
+                    return Expand;
+                case RenderMode.Bundled:
+                    return Simplify;
+                default:
+                    throw new ArgumentException();
+            }
+        }
+
+        internal IEnumerable<Requestable> Simplify(ResourceType type)
+        {
+            // We could do more, but we don't have to.
+
+            return requestables
+                .Where(r => r.Type == type)
+                .Distinct();
+        }
+
+        internal IEnumerable<Requestable> Expand(ResourceType type)
+        {
+            return GetOrderedResourcesWithDependencies(requestables.Where(r => r.Type == type).ExpandToResources());
+        }
+
+        Resource[] GetOrderedResourcesWithDependencies(IEnumerable<Resource> resources)
+        {
+            var resourcesWithDependencies = resources.GetResourcesWithDependencies()
+                .OrderBy(r => repository.GetIndex(r))
+                .ToArray();
+
+            return resourcesWithDependencies;
+        }
+
+        static String GetTemplateForType(ResourceType type)
+        {
+            switch (type)
+            {
+                case ResourceType.Js:
+                    return "<script src=\"{0}\"></script>";
+                case ResourceType.Css:
+                    return "<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\">";
+                default:
+                    throw new ArgumentException();
+            }
+        }
+
+        String GetUrlForWebResource(Requestable requestable, ResourceFlavor flavor, Func<String, String> toAbsolute)
+        {
+            return $"{toAbsolute(requestable.GetFlavouredPath(flavor))}?version={Convert.ToBase64String(repository.GetHash(requestable))}";
+        }
+
+        Repository repository;
+
+        List<Requestable> requestables = new List<Requestable>();
+    }
 
     /// <summary>
     /// Provides all methods needed in layouts and master pages to render tags.
@@ -1031,6 +1052,16 @@ namespace IronStone.Web.BasicBundles
         {
             return Render(ResourceType.Js);
         }
+
+        /// <summary>
+        /// Gets a hash string representing all required resources. This can be used to determine whether one of those resources has changed and need to be refreshed in a single-page application.
+        /// </summary>
+        /// <returns>The combined hash as a base64 string.</returns>
+        public static String GetCombinedHash()
+        {
+            return GetTracker().GetCombinedHash();
+        }
+
 
         static Tracker GetTracker()
         {

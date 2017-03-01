@@ -55,7 +55,7 @@ and `WebGrease` has a dependency on `AjaxMin`.
 
 I feel that I really don't need minification, as
 
-* In many projects, the vast majority of js and css comes
+* in many projects, the vast majority of js and css comes
   pre-minified from third party packages and
 * in the upcoming world of ASP.NET 5, minification will be done
   at compile time with tools that are better suited for the job.
@@ -65,7 +65,7 @@ I feel that I really don't need minification, as
 I wrote this little tool to have something that addresses the first
 two goals while sacrificing the third.
 
-It does a better job at that because:
+It does a better job at them because:
 
 ### - It's extremely lightweight
 
@@ -96,7 +96,7 @@ unbundled and bundled resources by some request condition - a
 
 ### - It allows for dependency definitions
 
-In neither `WebGrease` nor `Cassette`, there is any notion of a dependency.
+In neither `WebGrease` nor `Cassette` there is any notion of a dependency.
 
 If one resource depends on another, it's up to the view to require
 them both.

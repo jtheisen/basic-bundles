@@ -9,6 +9,11 @@
         BundleConfig.DefaultRequirements.Require();
     }
 
+    <script>
+        // This hash changes when any of the required resources changes.
+        var resourceHash = "@(IronStone.Web.BasicBundles.WebResources.GetCombinedHash())";
+    </script>
+
     @Html.Raw(IronStone.Web.BasicBundles.WebResources.RenderStylesheets())
 
 </head>

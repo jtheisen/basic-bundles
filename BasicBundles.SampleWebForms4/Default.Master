@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MyWebForm.master.cs" Inherits="BasicBundles.SampleWebForms4.MyWebForm" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Default.Master.cs" Inherits="BasicBundles.SampleWebForms4.MyWebForm" %>
 
 <!DOCTYPE html>
 
@@ -10,6 +10,12 @@
 
     <%=IronStone.Web.BasicBundles.WebResources.RenderStylesheets()%>
     <%=IronStone.Web.BasicBundles.WebResources.RenderScripts()%>
+
+    
+    <script>
+        // This hash changes when any of the required resources changes.
+        var resourceHash = "<%=IronStone.Web.BasicBundles.WebResources.GetCombinedHash()%>";
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">

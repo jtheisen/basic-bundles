@@ -14,7 +14,7 @@ You define a number of files and bundles in some static class that is
 accessible from your views. For example,
 
     public static readonly WebResource JQuery
-        = Configuration.AddScript("~/js/jquery.js");
+        = Configuration.AddJs("~/js/jquery.js");
 
 defines a jQuery resource. In a view that needs it, you can then
 require that resource by adding

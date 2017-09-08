@@ -413,6 +413,15 @@ namespace IronStone.Web.BasicBundles
                     MinifiedFlavor = GetFlavorInfo(pattern.Replace("(.min)", ".min"))
                 };
             }
+            else if (pattern.Contains("(.debug)"))
+            {
+                return new ResourceInfo()
+                {
+                    Index = index,
+                    StandardFlavor = GetFlavorInfo(pattern.Replace("(.debug)", ".debug")),
+                    MinifiedFlavor = GetFlavorInfo(pattern.Replace("(.debug)", ""))
+                };
+            }
             else
             {
                 return new ResourceInfo()
@@ -470,7 +479,7 @@ namespace IronStone.Web.BasicBundles
 
                 Requestable requestable = null;
 
-                if (requestables.TryGetValue(path, out requestable))
+                if (requestables.TryGetValue(path, out requestable) && !(requestable is Resource))
                 {
                     var outputStream = context["owin.ResponseBody"] as Stream;
                     var headers = context["owin.ResponseHeaders"] as IDictionary<String, String[]>;
@@ -749,7 +758,8 @@ namespace IronStone.Web.BasicBundles
 
         static Stack<SettingsSet> settingsStack = new Stack<SettingsSet>();
 
-        internal static SettingsSet Settings { get {
+        internal static SettingsSet Settings {
+            get {
 
                 if (settingsStack.Count == 0)
                     throw new InvalidOperationException("Basic Bundles have not been initialized. Call Configuration.Install first.");
